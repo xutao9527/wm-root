@@ -18,7 +18,7 @@ public:
 private:
   void start_accept()
   {
-    tcp_connection::pointer new_connection =
+    std::shared_ptr<tcp_connection> new_connection =
         tcp_connection::create(io_context_);
 
     acceptor_.async_accept(new_connection->socket(),
@@ -26,7 +26,7 @@ private:
                                      boost::asio::placeholders::error));
   }
 
-  void handle_accept(tcp_connection::pointer new_connection,
+  void handle_accept(std::shared_ptr<tcp_connection> new_connection,
                      const boost::system::error_code &error)
   {
     if (!error)

@@ -10,11 +10,10 @@ class tcp_connection
     : public std::enable_shared_from_this<tcp_connection>
 {
 public:
-  typedef std::shared_ptr<tcp_connection> pointer;
 
-  static pointer create(boost::asio::io_context &io_context)
+  static std::shared_ptr<tcp_connection> create(boost::asio::io_context &io_context)
   {
-    return pointer(new tcp_connection(io_context));
+    return std::shared_ptr<tcp_connection>(new tcp_connection(io_context));
   }
 
   tcp::socket &socket()
