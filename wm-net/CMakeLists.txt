@@ -1,4 +1,4 @@
-
+project(wm-net VERSION ${WM_VERSION})
 
 
 # 添加可执行程序
