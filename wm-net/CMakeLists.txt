@@ -7,6 +7,7 @@ find_package(Boost REQUIRED COMPONENTS system)
 file(GLOB SRC_FILES "src/*.cpp" "src/*.hpp")
 
 message(STATUS "SRC_FILES: ${SRC_FILES}")
+message(STATUS "SRC_FILES: ${Boost_INCLUDE_DIRS}")
 
 add_library(wm-net ${SRC_FILES})
 target_include_directories(wm-net PUBLIC 
@@ -14,6 +15,7 @@ target_include_directories(wm-net PUBLIC
     ${Boost_INCLUDE_DIRS}  
 )
 target_link_libraries(wm-net ${Boost_LIBRARIES})  # 链接Boost库
+
 
 # 设置可执行文件输出目录
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
