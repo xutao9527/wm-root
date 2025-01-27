@@ -37,5 +37,5 @@ add_subdirectory(wm-net)
 # add_subdirectory(wm-business)
 
 # 添加测试模块
-#add_subdirectory(wm-tests)
+add_subdirectory(wm-tests)
 
