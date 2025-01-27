@@ -1,16 +1,11 @@
 #include <spdlog/spdlog.h>
+#include <boost/asio.hpp>
+#include <tcp_server.h>
 
 int main(int argc, char *argv[])
 {
-    // 初始化spdlog
-    spdlog::set_pattern("[%Y-%m-%d %H:%M:%S.%e] [%l] %v");
-    spdlog::set_level(spdlog::level::debug);
-
-    spdlog::info("Starting net_test...");
-
-    spdlog::debug("Creating io_context...");
-
-    spdlog::info("Net test completed successfully");
-
+    boost::asio::io_context io_context;
+    tcp_server server(io_context, 5678);
+    io_context.run();
     return 0;
 }
