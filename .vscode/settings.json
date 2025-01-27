@@ -90,6 +90,12 @@
         "filesystem": "cpp",
         "fstream": "cpp",
         "regex": "cpp",
-        "span": "cpp"
+        "span": "cpp",
+        "cfenv": "cpp",
+        "cwctype": "cpp",
+        "memory_resource": "cpp",
+        "numeric": "cpp",
+        "ranges": "cpp",
+        "typeindex": "cpp"
     }
 }
