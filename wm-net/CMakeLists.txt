@@ -1,13 +1,19 @@
 project(wm-net VERSION ${WM_VERSION})
 
 
-# 查找Boost库
 find_package(Boost REQUIRED COMPONENTS system)
 
+set(SRC_FILES  
+    src/tcp_server.h
+    src/tcp_server.cpp
+)
 
-# 添加可执行程序
-add_executable(wm-net src/main.cpp)
-target_include_directories(wm-net PRIVATE ${Boost_INCLUDE_DIRS})
+add_library(wm-net ${SRC_FILES})
+target_include_directories(wm-net PUBLIC 
+    ${CMAKE_CURRENT_SOURCE_DIR}/src
+    ${Boost_INCLUDE_DIRS}  
+)
+target_link_libraries(wm-net ${Boost_LIBRARIES})  # 链接Boost库
 
 # 设置可执行文件输出目录
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)

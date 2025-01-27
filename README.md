@@ -26,7 +26,6 @@
 
 ### 2. 协议封装层 (wm-protocol)
 - 二进制协议序列化
-- Protocol Buffers支持
 - 自定义协议框架
 - 消息编解码
 
@@ -38,26 +37,19 @@
 
 ## 项目结构
 
-wm-root/                   # 项目根目录
+```
+wm-root/                  # 项目根目录
 ├── CMakeLists.txt        # 主CMake配置文件
 ├── wm-net/               # 网络模块
 │   ├── CMakeLists.txt
-│   ├── include/          # 公共头文件
-│   │   └── wm-net/
-│   ├── src/             # 源文件
-│   └── tests/           # 单元测试
-│       ├── core/        # 核心测试
-│       ├── tcp/         # TCP测试
-│       └── udp/         # UDP测试
+│   ├── src/              # 源文件
+│   └── tests/            # 单元测试
 ├── wm-protocol/          # 协议封装层
 │   ├── CMakeLists.txt
-│   ├── include/         # 公共头文件
-│   │   └── wm-protocol/
-│   ├── src/            # 源文件
-│   └── tests/          # 单元测试
-└── wm-business/         # 业务模块
+│   ├── src/              # 源文件
+│   └── tests/            # 单元测试
+└── wm-business/          # 业务模块
     ├── CMakeLists.txt
-    ├── include/        # 公共头文件
-    │   └── wm-business/
-    ├── src/           # 源文件
-    └── tests/         # 单元测试
+    ├── src/              # 源文件
+    └── tests/            # 单元测试
+```

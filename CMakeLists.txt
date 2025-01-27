@@ -17,6 +17,7 @@ set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
 
+
 # 设置编译选项
 if(MSVC)
     add_compile_options(/utf-8)
@@ -24,8 +25,16 @@ else()
     add_compile_options(-finput-charset=utf-8)
 endif()
 
+
 # 添加子目录
 add_subdirectory(wm-net)
 # add_subdirectory(wm-protocol)
 # add_subdirectory(wm-business)
 
+# 添加测试开关
+option(BUILD_TESTS "Build tests" ON)
+# 根据测试开关决定是否添加测试目录
+if(BUILD_TESTS)
+    enable_testing()
+    add_subdirectory(wm-tests)
+endif()
