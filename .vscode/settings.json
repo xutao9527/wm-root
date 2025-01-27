@@ -3,5 +3,5 @@
     "cmake.debugConfig": {
         "type": "lldb"
     },
-    "cmake.buildDirectory": "${workspaceFolder}/out/${buildType}"
+    "cmake.buildDirectory": "${workspaceFolder}/build/${buildType}"
 }
