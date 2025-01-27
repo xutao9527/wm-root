@@ -5,6 +5,7 @@
 
 using boost::asio::ip::tcp;
 
+
 class tcp_server
 {
 public:
@@ -12,29 +13,26 @@ public:
       : io_context_(io_context),
         acceptor_(io_context, tcp::endpoint(tcp::v4(), port))
   {
-    start_accept();
+    co_spawn(io_context_, accept_connections(), boost::asio::detached);
   }
 
 private:
-  void start_accept()
+  // 协程函数，用于接受连接
+  boost::asio::awaitable<void> accept_connections()
   {
-    std::shared_ptr<tcp_connection> new_connection =
-        tcp_connection::create(io_context_);
-
-    acceptor_.async_accept(new_connection->socket(),
-                           std::bind(&tcp_server::handle_accept, this, new_connection,
-                                     boost::asio::placeholders::error));
-  }
-
-  void handle_accept(std::shared_ptr<tcp_connection> new_connection,
-                     const boost::system::error_code &error)
-  {
-    if (!error)
+    while (true)
     {
-      new_connection->start();
+      try
+      {
+        auto new_connection = tcp_connection::create(io_context_);
+        co_await acceptor_.async_accept(new_connection->socket(), boost::asio::use_awaitable);
+        new_connection->start();
+      }
+      catch (const std::exception& e)
+      {
+        spdlog::error("Accept error: {}", e.what());
+      }
     }
-
-    start_accept();
   }
 
   boost::asio::io_context &io_context_;
