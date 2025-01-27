@@ -17,14 +17,12 @@ set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
 
-
 # 设置编译选项
 if(MSVC)
     add_compile_options(/utf-8)
 else()
     add_compile_options(-finput-charset=utf-8)
 endif()
-
 
 # 添加子目录
 add_subdirectory(wm-net)
