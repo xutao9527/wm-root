@@ -24,13 +24,16 @@ else()
     add_compile_options(-finput-charset=utf-8)
 endif()
 
-# 添加子目录
+# 添加第三方模块
+add_subdirectory(3rdparty)
+
+# 添加wm-net模块
 add_subdirectory(wm-net)
 # add_subdirectory(wm-protocol)
 # add_subdirectory(wm-business)
 
 # 添加测试开关
-option(BUILD_TESTS "Build tests" ON)
+option(BUILD_TESTS "Build tests" OFF)
 # 根据测试开关决定是否添加测试目录
 if(BUILD_TESTS)
     enable_testing()

@@ -3,10 +3,10 @@ project(wm-net VERSION ${WM_VERSION})
 
 find_package(Boost REQUIRED COMPONENTS system)
 
-set(SRC_FILES  
-    src/tcp_server.h
-    src/tcp_server.cpp
-)
+# 使用 file(GLOB) 扫描 src 目录下的源文件和头文件
+file(GLOB SRC_FILES "src/*.cpp" "src/*.hpp")
+
+message(STATUS "SRC_FILES: ${SRC_FILES}")
 
 add_library(wm-net ${SRC_FILES})
 target_include_directories(wm-net PUBLIC 
