@@ -1,0 +1,7 @@
+{
+    "cmake.generator": "Ninja",
+    "cmake.debugConfig": {
+        "type": "lldb"
+    },
+    "cmake.buildDirectory": "${workspaceFolder}/out/${buildType}"
+}
