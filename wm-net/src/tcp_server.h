@@ -1,6 +1,7 @@
 #pragma once
 
 #include <boost/asio.hpp>
+#include <boost/asio/awaitable.hpp>
 #include "tcp_connection.h"
 
 using boost::asio::ip::tcp;
