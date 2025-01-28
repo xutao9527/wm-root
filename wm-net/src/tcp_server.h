@@ -17,7 +17,6 @@ public:
   }
 
 private:
-  // 协程函数，用于接受连接
   boost::asio::awaitable<void> accept_connections()
   {
     while (true)
@@ -34,7 +33,6 @@ private:
       }
     }
   }
-
   boost::asio::io_context &io_context_;
   tcp::acceptor acceptor_;
 };
