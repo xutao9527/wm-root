@@ -26,6 +26,9 @@ private:
 			try
 			{
 				tcp::socket socket = co_await acceptor_.async_accept(use_awaitable);
+				std::stringstream thread_id_converter;
+				thread_id_converter << std::this_thread::get_id();
+				spdlog::info("client connected at thread id: {}",  thread_id_converter.str());
 				std::shared_ptr<tcp_connection> connection = std::make_shared<tcp_connection>(std::move(socket));
 				connection->start();
 			}
