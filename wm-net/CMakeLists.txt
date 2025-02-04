@@ -1,4 +1,5 @@
 project(wm-net VERSION ${WM_VERSION})
+cmake_policy(SET CMP0144 NEW)
 
 find_package(Boost REQUIRED COMPONENTS system)
 

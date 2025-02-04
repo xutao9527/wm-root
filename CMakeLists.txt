@@ -1,6 +1,5 @@
 cmake_minimum_required(VERSION 3.25)
 
-
 # 设置Boost相关环境变量
 set(BOOST_ROOT "C:/Boost" CACHE PATH "Boost root directory")
 set(BOOST_LIBRARYDIR "C:/Boost/lib" CACHE PATH "Boost library directory")
