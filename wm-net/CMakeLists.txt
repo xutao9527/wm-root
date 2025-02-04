@@ -1,6 +1,3 @@
-# 设置 CMake 策略 CMP0144 为 NEW，以消除警告
-cmake_policy(SET CMP0144 NEW)
-
 project(wm-net VERSION ${WM_VERSION})
 
 find_package(Boost REQUIRED COMPONENTS system)
@@ -11,7 +8,7 @@ message(STATUS "Boost_LIBRARIES: ${Boost_LIBRARIES}")
 
 file(GLOB SRC_FILES "src/*.cpp" "src/*.h" "src/utils.hpp")
 
-add_library(wm-net ${SRC_FILES})
+add_library(wm-net ${SRC_FILES} "src/singleton.h")
 target_include_directories(wm-net PUBLIC
         ${CMAKE_CURRENT_SOURCE_DIR}/src
         ${Boost_INCLUDE_DIRS}

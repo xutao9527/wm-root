@@ -1,11 +1,21 @@
-#include <spdlog/spdlog.h>
 #include <boost/asio.hpp>
-#include <tcp_server.h>
+#include <spdlog/spdlog.h>
+#include <csignal>
+#include "context_pool.h"
 
-int main(int argc, char *argv[])
-{
+using boost::asio::awaitable;
+using boost::asio::use_awaitable;
+using boost::asio::co_spawn;
+using boost::asio::detached;
+
+
+
+int main(int argc, char* argv[]) {
+	spdlog::info("Application started");
     boost::asio::io_context io_context;
-    tcp_server server(io_context, 5678);
-    io_context.run();
-    return 0;
+	boost::asio::executor_work_guard<boost::asio::io_context::executor_type> worker(io_context.get_executor());
+    ContextPool::instance();
+	io_context.run();
+	spdlog::info("Application stopped");
+	return 0;
 }
