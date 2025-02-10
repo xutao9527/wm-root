@@ -4,13 +4,11 @@
 
 class ServerConf
 {
-    friend class AppServer;
-
 public:
     ServerConf();
     ~ServerConf();
 
-private:
+public:
     std::string address;
     int port;
     int thread_num;
