@@ -4,12 +4,11 @@
 class TcpServer
 {
 public:
-    TcpServer(boost::asio::io_context& io_context, ServerConf& server_conf);
+    TcpServer(boost::asio::io_context &io_context, ServerConf &server_conf);
 
     ~TcpServer();
 
 private:
-    boost::asio::io_context& io_context_;
-    ServerConf& server_conf_;
-
+    boost::asio::io_context &io_context_;
+    ServerConf &server_conf_;
 };

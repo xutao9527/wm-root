@@ -2,10 +2,11 @@
 
 #include <string>
 
-class ServerConf {
+class ServerConf
+{
     friend class AppServer;
-public:
 
+public:
     ServerConf();
     ~ServerConf();
 
@@ -14,5 +15,3 @@ private:
     int port;
     int thread_num;
 };
-
-

@@ -10,8 +10,6 @@ AppServer::AppServer()
     tcp_server_ = std::make_shared<TcpServer>(*io_context_, server_conf_);
 }
 
-    
-
 AppServer::~AppServer()
 {
     spdlog::info("~AppServer");
