@@ -11,5 +11,6 @@ private:
     ServerConf server_conf_;
     std::shared_ptr<TcpServer> tcp_server_;
     std::unique_ptr<boost::asio::io_context> io_context_;
+    std::unique_ptr<boost::asio::executor_work_guard<boost::asio::io_context::executor_type>> work_guard_;
     std::vector<std::thread> threads_;
 };
