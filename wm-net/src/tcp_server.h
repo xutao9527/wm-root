@@ -3,6 +3,7 @@
 #include <boost/asio.hpp>
 #include <boost/asio/awaitable.hpp>
 #include "tcp_connection.h"
+#include "context_pool.h"
 
 using boost::asio::ip::tcp;
 using boost::asio::awaitable;
@@ -25,12 +26,21 @@ private:
 		{
 			try
 			{
+				//auto& context = ContextPool::instance().getContext();
 				tcp::socket socket = co_await acceptor_.async_accept(use_awaitable);
 				std::stringstream thread_id_converter;
 				thread_id_converter << std::this_thread::get_id();
-				spdlog::info("client connected at thread id: {}",  thread_id_converter.str());
+				spdlog::info("client connected at thread id: {}", thread_id_converter.str());
 				std::shared_ptr<tcp_connection> connection = std::make_shared<tcp_connection>(std::move(socket));
 				connection->start();
+
+			/*	auto& context = ContextPool::instance().getContext();
+				std::shared_ptr<tcp_connection> connection = std::make_shared<tcp_connection>(context);
+				co_await acceptor_.async_accept(connection->getSocket(), use_awaitable);
+				connection->start();
+				std::stringstream thread_id_converter;
+				thread_id_converter << std::this_thread::get_id();
+				spdlog::info("client connected at thread id: {}",  thread_id_converter.str());*/
 			}
 			catch (const std::exception& e)
 			{

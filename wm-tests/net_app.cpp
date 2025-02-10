@@ -19,8 +19,18 @@ int main(int argc, char* argv[]) {
     spdlog::info("Application started");
     boost::asio::io_context io_context;
     boost::asio::executor_work_guard<boost::asio::io_context::executor_type> worker(io_context.get_executor());
-    ContextPool::instance();
-    co_spawn(io_context, stop(io_context), boost::asio::detached);
-    io_context.run();
+    //ContextPool::instance();
+    //co_spawn(io_context, stop(io_context), boost::asio::detached);
+    
+	tcp_server server(io_context, 5678);
+    std::vector<std::thread> threads;
+    for (int i = 0; i < 4; ++i) { 
+        threads.emplace_back([&io_context] { io_context.run(); });
+    }
+
+    for (auto& t : threads) {
+        t.join();
+        
+    }
     spdlog::info("Application stopped");
 }

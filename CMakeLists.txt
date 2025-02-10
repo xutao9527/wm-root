@@ -1,4 +1,5 @@
 cmake_minimum_required(VERSION 3.25)
+cmake_policy(SET CMP0144 NEW)
 
 # 设置Boost相关环境变量
 set(BOOST_ROOT "C:/Boost" CACHE PATH "Boost root directory")
@@ -29,14 +30,14 @@ endif()
 add_subdirectory(3rdparty)
 
 # 添加wm-net模块
-add_subdirectory(wm-net)
+# add_subdirectory(wm-net)
 
-# 添加wm-protocol模块
-# add_subdirectory(wm-protocol)
+# 添加wm-core模块
+add_subdirectory(wm-core)
 
 # 添加wm-business模块
-# add_subdirectory(wm-business)
+add_subdirectory(wm-app)
 
 # 添加测试模块
-add_subdirectory(wm-tests)
+# add_subdirectory(wm-tests)
 
