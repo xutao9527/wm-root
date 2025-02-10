@@ -1,17 +1,15 @@
 #include <boost/asio.hpp>
 #include "conf/server_conf.hpp"
 
-class TcpServer {
+class TcpServer
+{
 public:
-
-    TcpServer();
-
+    TcpServer(boost::asio::io_context& io_context, ServerConf& server_conf);
 
     ~TcpServer();
 
-
 private:
-    
-
+    boost::asio::io_context& io_context_;
+    ServerConf& server_conf_;
 
 };

@@ -3,6 +3,7 @@
 #include <string>
 
 class ServerConf {
+    friend class AppServer;
 public:
 
     ServerConf();
