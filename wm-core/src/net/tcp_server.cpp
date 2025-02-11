@@ -1,28 +1,28 @@
 #include "tcp_server.hpp"
+#include "tcp_connection.hpp"
 
-TcpServer::TcpServer(boost::asio::io_context &io_context, ServerConf &server_conf)
-    : io_context_(io_context), server_conf_(server_conf),
-    acceptor_(io_context, boost::asio::ip::tcp::endpoint(boost::asio::ip::tcp::v4(), server_conf_.port))
+tcp_server::tcp_server(boost::asio::io_context &io_context, app_conf &app_conf)
+    : io_context_(io_context), app_conf_(app_conf)
 {
-    spdlog::info("TcpServer");
+    endpoint_ = boost::asio::ip::tcp::endpoint(boost::asio::ip::make_address(app_conf_.address), app_conf_.port);
+    acceptor_ = std::make_unique<boost::asio::ip::tcp::acceptor>(io_context_, endpoint_);
     co_spawn(io_context_, accept_connections(), boost::asio::detached);
 }
 
-
-TcpServer::~TcpServer()
-
+tcp_server::~tcp_server()
 {
-    spdlog::info("~TcpServer");
+    spdlog::info("~tcp_server");
 }
 
-boost::asio::awaitable<void> TcpServer::accept_connections()
+boost::asio::awaitable<void> tcp_server::accept_connections()
 {
     while (true)
     {
-        boost::asio::ip::tcp::socket socket = co_await acceptor_.async_accept(boost::asio::use_awaitable);
+        boost::asio::ip::tcp::socket socket = co_await acceptor_->async_accept(boost::asio::use_awaitable);
         spdlog::info("client connected");
         std::stringstream thread_id_converter;
         thread_id_converter << std::this_thread::get_id();
         spdlog::info("client connected at thread id: {}", thread_id_converter.str());
+        std::shared_ptr<tcp_connection> connection = std::make_shared<tcp_connection>(std::move(socket));
     }
 }

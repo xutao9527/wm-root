@@ -2,11 +2,11 @@
 
 #include <string>
 
-class ServerConf
+class app_conf
 {
 public:
-    ServerConf();
-    ~ServerConf();
+    app_conf();
+    ~app_conf();
 
 public:
     std::string address;

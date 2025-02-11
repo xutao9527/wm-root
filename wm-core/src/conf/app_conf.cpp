@@ -1,12 +1,12 @@
-#include "server_conf.hpp"
+#include "app_conf.hpp"
 #include <boost/property_tree/ptree.hpp>
 #include <boost/property_tree/ini_parser.hpp>
 
-ServerConf::ServerConf()
+app_conf::app_conf()
 {
     try
     {
-        spdlog::info("ServerConf");
+        spdlog::info("app_conf");
         boost::property_tree::ptree pt;
         boost::property_tree::ini_parser::read_ini("resources/config.ini", pt);
         address = pt.get<std::string>("ServerSettings.address1", "127.0.0.1");
@@ -20,7 +20,7 @@ ServerConf::ServerConf()
     }
 }
 
-ServerConf::~ServerConf()
+app_conf::~app_conf()
 {
-    spdlog::info("~ServerConf");
+    spdlog::info("~app_conf");
 }

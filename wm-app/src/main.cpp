@@ -1,9 +1,9 @@
 #include <spdlog/spdlog.h>
 #include <iostream>
-#include <app/app_server.hpp>
+#include <context/app_context.hpp>
 
 int main() {
-	AppServer appServer;
+	app_context appServer;
 	appServer.run();
     return 0;
 }
