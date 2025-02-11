@@ -3,29 +3,31 @@
 class tcp_connection : public std::enable_shared_from_this<tcp_connection>
 {
 private:
-    boost::asio::ip::tcp::socket socket_;
-public:
-    tcp_connection(boost::asio::ip::tcp::socket socket)
-        : socket_(std::move(socket))
-    {
-        spdlog::debug("tcp_connection");
-		
-    }
+	boost::asio::ip::tcp::socket socket_;
 
-    ~tcp_connection()
-    {
+public:
+	tcp_connection(boost::asio::ip::tcp::socket socket)
+		: socket_(std::move(socket))
+	{
+		spdlog::debug("tcp_connection");
+	}
+
+	~tcp_connection()
+	{
+		socket_.close();
 		spdlog::debug("~tcp_connection");
-    }
+	}
 
 	void start()
 	{
-		co_spawn(socket_.get_executor(), [self = shared_from_this()] { return self->reader(); }, boost::asio::detached);
-		co_spawn(socket_.get_executor(), [self = shared_from_this()] { return self->writer(); }, boost::asio::detached);
+		co_spawn(socket_.get_executor(), [self = shared_from_this()]
+			{ return self->reader(); }, boost::asio::detached);
+		
 	}
-    
-    boost::asio::awaitable<void> reader()
-    {
-      		try
+
+	boost::asio::awaitable<void> reader()
+	{
+		try
 		{
 			while (socket_.is_open())
 			{
@@ -37,15 +39,43 @@ public:
 				thread_id_converter << std::this_thread::get_id();
 				spdlog::info("read message: {}, thread id {}", line, thread_id_converter.str());
 				read_msg.erase(0, n);
-			}
 
+				try
+				{
+					{
+						std::string write_msg = "writer content#";
+						co_await boost::asio::async_write(socket_, boost::asio::buffer(write_msg), boost::asio::use_awaitable);
+
+						std::stringstream thread_id_converter;
+						thread_id_converter << std::this_thread::get_id();
+						spdlog::info("write message: {}, thread id {}", write_msg, thread_id_converter.str());
+					}
+				}
+				catch (const boost::system::system_error& ex)
+				{
+					if (ex.code() == boost::asio::error::operation_aborted ||
+						ex.code() == boost::asio::error::eof)
+					{
+						spdlog::debug("Client disconnected: {}", socket_.remote_endpoint().address().to_string());
+					}
+					else
+					{
+						spdlog::error("writer error: {}", ex.what());
+					}
+				}
+				catch (const std::exception& ex)
+				{
+					spdlog::debug("writer error: {}", ex.what());
+				}
+
+			}
 		}
 		catch (const boost::system::system_error& ex)
 		{
 			if (ex.code() == boost::asio::error::operation_aborted ||
 				ex.code() == boost::asio::error::eof)
 			{
-				spdlog::info("Client disconnected: {}", socket_.remote_endpoint().address().to_string());
+				spdlog::debug("Client disconnected: {}", socket_.remote_endpoint().address().to_string());
 			}
 			else
 			{
@@ -54,16 +84,14 @@ public:
 		}
 		catch (const std::exception& ex)
 		{
-			spdlog::error("reader error: {}", ex.what());
+			spdlog::debug("reader error: {}", ex.what());
 		}
-    }
+	}
 
-    boost::asio::awaitable<void> writer()
+	boost::asio::awaitable<void> writer()
 	{
-			try
+		try
 		{
-			boost::asio::steady_timer timer(socket_.get_executor());
-			while (socket_.is_open())
 			{
 				std::string write_msg = "writer content#";
 				co_await boost::asio::async_write(socket_, boost::asio::buffer(write_msg), boost::asio::use_awaitable);
@@ -71,9 +99,6 @@ public:
 				std::stringstream thread_id_converter;
 				thread_id_converter << std::this_thread::get_id();
 				spdlog::info("write message: {}, thread id {}", write_msg, thread_id_converter.str());
-
-				timer.expires_after(std::chrono::seconds(1));
-				co_await timer.async_wait(boost::asio::use_awaitable);
 			}
 		}
 		catch (const boost::system::system_error& ex)
@@ -81,7 +106,7 @@ public:
 			if (ex.code() == boost::asio::error::operation_aborted ||
 				ex.code() == boost::asio::error::eof)
 			{
-				spdlog::info("Client disconnected: {}", socket_.remote_endpoint().address().to_string());
+				spdlog::debug("Client disconnected: {}", socket_.remote_endpoint().address().to_string());
 			}
 			else
 			{
@@ -90,7 +115,7 @@ public:
 		}
 		catch (const std::exception& ex)
 		{
-			spdlog::error("writer error: {}", ex.what());
+			spdlog::debug("writer error: {}", ex.what());
 		}
 	}
 };
