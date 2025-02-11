@@ -4,7 +4,7 @@
 
 app_conf::app_conf()
 {
-    spdlog::debug("app_conf");
+    spdlog::debug("app_conf constructor...");
     try
     {
         boost::property_tree::ptree pt;
@@ -24,5 +24,5 @@ app_conf::app_conf()
 
 app_conf::~app_conf()
 {
-    spdlog::debug("~app_conf");
+    spdlog::debug("~app_conf destructor...");
 }

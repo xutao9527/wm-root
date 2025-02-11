@@ -9,13 +9,13 @@ class listener : public std::enable_shared_from_this<listener>
 public:
 	listener(boost::asio::io_context &io_context, app_conf &app_conf) : io_context_(io_context), app_conf_(app_conf)
 	{
-		spdlog::debug("listener");
+		spdlog::debug("listener constructor...");
 		endpoint_ = boost::asio::ip::tcp::endpoint(boost::asio::ip::make_address(app_conf_.listen_address), app_conf_.http_port);
 		acceptor_ = std::make_unique<boost::asio::ip::tcp::acceptor>(io_context_, endpoint_);
 	}
 	~listener()
 	{
-		spdlog::debug("~listener");
+		spdlog::debug("~listener destructor...");
 	}
 
 	void run()

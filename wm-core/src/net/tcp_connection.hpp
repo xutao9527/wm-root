@@ -9,20 +9,20 @@ public:
 	tcp_connection(boost::asio::ip::tcp::socket socket)
 		: socket_(std::move(socket))
 	{
-		spdlog::debug("tcp_connection");
+		spdlog::debug("tcp_connection constructor...");
 	}
 
 	~tcp_connection()
 	{
 		socket_.close();
-		spdlog::debug("~tcp_connection");
+		spdlog::debug("~tcp_connection destructor...");
 	}
 
 	void start()
 	{
 		co_spawn(socket_.get_executor(), [self = shared_from_this()]
 			{ return self->reader(); }, boost::asio::detached);
-		
+
 	}
 
 	boost::asio::awaitable<void> reader()
@@ -32,8 +32,7 @@ public:
 			while (socket_.is_open())
 			{
 				std::string read_msg;
-				std::size_t n = co_await boost::asio::async_read_until(socket_,
-					boost::asio::dynamic_buffer(read_msg, 1024), '#', boost::asio::use_awaitable);
+				std::size_t n = co_await boost::asio::async_read_until(socket_, boost::asio::dynamic_buffer(read_msg, 1024), '#', boost::asio::use_awaitable);
 				std::string line = read_msg.substr(0, n);
 				std::stringstream thread_id_converter;
 				thread_id_converter << std::this_thread::get_id();
