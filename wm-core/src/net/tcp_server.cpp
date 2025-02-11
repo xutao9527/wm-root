@@ -18,11 +18,19 @@ boost::asio::awaitable<void> tcp_server::accept_connections()
 {
     while (true)
     {
-        boost::asio::ip::tcp::socket socket = co_await acceptor_->async_accept(boost::asio::use_awaitable);
-        spdlog::info("client connected");
-        std::stringstream thread_id_converter;
-        thread_id_converter << std::this_thread::get_id();
-        spdlog::info("client connected at thread id: {}", thread_id_converter.str());
-        std::shared_ptr<tcp_connection> connection = std::make_shared<tcp_connection>(std::move(socket));
+        try
+        {
+            boost::asio::ip::tcp::socket socket = co_await acceptor_->async_accept(boost::asio::use_awaitable);
+            std::stringstream thread_id_converter;
+            thread_id_converter << std::this_thread::get_id();
+            spdlog::info("client connected at thread id: {}", thread_id_converter.str());
+            std::shared_ptr<tcp_connection> connection = std::make_shared<tcp_connection>(std::move(socket));
+            connection->start();
+        }
+        catch (const std::exception& e)
+        {
+            spdlog::error("Accept error: {}", e.what());
+        }
+      
     }
 }

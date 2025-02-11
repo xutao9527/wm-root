@@ -11,5 +11,5 @@ public:
 public:
     std::string address;
     int port;
-    int thread_num;
+    int worker_threads;
 };

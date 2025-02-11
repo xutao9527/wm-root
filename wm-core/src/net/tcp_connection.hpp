@@ -9,14 +9,19 @@ public:
         : socket_(std::move(socket))
     {
         spdlog::info("New connection from: {}", socket_.remote_endpoint().address().to_string());
-        co_spawn(socket_.get_executor(), reader(), boost::asio::detached);
-        co_spawn(socket_.get_executor(), writer(), boost::asio::detached);
+		
     }
 
     ~tcp_connection()
     {
         spdlog::info("Close connection from: {}", socket_.remote_endpoint().address().to_string());
     }
+
+	void start()
+	{
+		co_spawn(socket_.get_executor(), [self = shared_from_this()] { return self->reader(); }, boost::asio::detached);
+		co_spawn(socket_.get_executor(), [self = shared_from_this()] { return self->writer(); }, boost::asio::detached);
+	}
     
     boost::asio::awaitable<void> reader()
     {

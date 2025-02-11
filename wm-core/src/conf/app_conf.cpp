@@ -11,8 +11,8 @@ app_conf::app_conf()
         boost::property_tree::ini_parser::read_ini("resources/config.ini", pt);
         address = pt.get<std::string>("ServerSettings.address1", "127.0.0.1");
         port = pt.get<int>("ServerSettings.port", 5678);
-        thread_num = pt.get<int>("ServerSettings.thread_num", 4);
-        spdlog::info("read config file success: address: {}, port: {}, thread_num: {}", address, port, thread_num);
+        worker_threads = pt.get<int>("ServerSettings.worker_threads", 4);
+        spdlog::info("read config file success: address: {}, port: {}, net_worker_threads: {}", address, port, worker_threads);
     }
     catch (const std::exception &e)
     {
