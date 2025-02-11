@@ -8,13 +8,13 @@ public:
     tcp_connection(boost::asio::ip::tcp::socket socket)
         : socket_(std::move(socket))
     {
-        spdlog::info("New connection from: {}", socket_.remote_endpoint().address().to_string());
+        spdlog::debug("tcp_connection");
 		
     }
 
     ~tcp_connection()
     {
-        spdlog::info("Close connection from: {}", socket_.remote_endpoint().address().to_string());
+		spdlog::debug("~tcp_connection");
     }
 
 	void start()
