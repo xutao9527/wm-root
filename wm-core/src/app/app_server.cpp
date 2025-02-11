@@ -2,10 +2,6 @@
 
 AppServer::AppServer()
 {
-    spdlog::info("AppServer");
-    spdlog::info("address: {}", server_conf_.address);
-    spdlog::info("port: {}", server_conf_.port);
-    spdlog::info("thread_num: {}", server_conf_.thread_num);
     io_context_ = std::make_unique<boost::asio::io_context>(server_conf_.thread_num);
     // work_guard_ = std::make_unique<boost::asio::executor_work_guard<boost::asio::io_context::executor_type>>(io_context_->get_executor());
     tcp_server_ = std::make_shared<TcpServer>(*io_context_, server_conf_);
