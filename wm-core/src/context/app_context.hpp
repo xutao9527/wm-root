@@ -30,9 +30,7 @@ public:
 		{
 			worker_threads_.emplace_back([this]() {io_context_->run(); });
 		}
-		co_spawn(*io_context_, getInputUntilExit(), boost::asio::detached);
-        co_spawn(*io_context_, [this]
-			{ return this->getInputUntilExit(); }, boost::asio::detached);
+        co_spawn(*io_context_, [this]{ return this->getInputUntilExit(); }, boost::asio::detached);
 		io_context_->run();
 	}
 
@@ -47,17 +45,18 @@ public:
 	}
 
 private:
-	// 处理终端输入的协程
+	
 	boost::asio::awaitable<void> getInputUntilExit()
 	{
 		std::string input;
-		spdlog::info("Enter a string (type 'exit' to quit):");
+		spdlog::info("Enter a string (type 'q' to quit):");
 		while (true)
 		{   
 			std::cout << "> ";
 			std::getline(std::cin, input); // 获取一行输入
-			if (input == "exit")
+			if (input == "q")
 			{
+                this->stop();
 				break;
 			}   
 			spdlog::info("You entered: {}", input);
