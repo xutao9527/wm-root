@@ -9,7 +9,9 @@ public:
     ~app_conf();
 
 public:
-    std::string address;
-    int port;
+    std::string listen_address;
+    int http_port;
+    int ws_port;
+    int socket_port;
     int worker_threads;
 };
