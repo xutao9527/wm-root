@@ -39,13 +39,11 @@ public:
 				thread_id_converter << std::this_thread::get_id();
 				spdlog::info("read message: {}, thread id {}", line, thread_id_converter.str());
 				read_msg.erase(0, n);
-
 				try
 				{
 					{
 						std::string write_msg = "writer content#";
 						co_await boost::asio::async_write(socket_, boost::asio::buffer(write_msg), boost::asio::use_awaitable);
-
 						std::stringstream thread_id_converter;
 						thread_id_converter << std::this_thread::get_id();
 						spdlog::info("write message: {}, thread id {}", write_msg, thread_id_converter.str());
@@ -92,14 +90,11 @@ public:
 	{
 		try
 		{
-			{
-				std::string write_msg = "writer content#";
-				co_await boost::asio::async_write(socket_, boost::asio::buffer(write_msg), boost::asio::use_awaitable);
-
-				std::stringstream thread_id_converter;
-				thread_id_converter << std::this_thread::get_id();
-				spdlog::info("write message: {}, thread id {}", write_msg, thread_id_converter.str());
-			}
+			std::string write_msg = "writer content#";
+			co_await boost::asio::async_write(socket_, boost::asio::buffer(write_msg), boost::asio::use_awaitable);
+			std::stringstream thread_id_converter;
+			thread_id_converter << std::this_thread::get_id();
+			spdlog::info("write message: {}, thread id {}", write_msg, thread_id_converter.str());
 		}
 		catch (const boost::system::system_error& ex)
 		{
@@ -117,5 +112,6 @@ public:
 		{
 			spdlog::debug("writer error: {}", ex.what());
 		}
+		co_return;
 	}
 };

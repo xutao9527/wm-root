@@ -5,7 +5,7 @@
 int main() {
 	spdlog::set_level(spdlog::level::debug);
 	app_context appServer;
-	appServer.run();
+	appServer.start();
     return 0;
 }
 
