@@ -28,8 +28,8 @@ public:
 	{
 		co_spawn(io_context_, [self = shared_from_this()]
 				 { return self->accept_socket_connections(); }, boost::asio::detached);
-		co_spawn(io_context_, [self = shared_from_this()]
-				 { return self->accept_http_connections(); }, boost::asio::detached);
+		// co_spawn(io_context_, [self = shared_from_this()]
+		// 		 { return self->accept_http_connections(); }, boost::asio::detached);
 	}
 
 private:
