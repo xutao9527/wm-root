@@ -1,14 +1,11 @@
 cmake_minimum_required(VERSION 3.25)
-cmake_policy(SET CMP0144 NEW)
 
 # 设置Boost相关环境变量
 set(BOOST_ROOT "C:/Boost" CACHE PATH "Boost root directory")
-set(BOOST_LIBRARYDIR "C:/Boost/lib" CACHE PATH "Boost library directory")
-
+set(BOOST_LIBDIARY "C:/Boost/lib" CACHE PATH "Boost library directory")
 
 # 设置wm版本
 set(WM_VERSION "1.0.0" CACHE STRING "wm version")
-
 
 # 设置项目名称
 project(wm-root VERSION ${WM_VERSION})
