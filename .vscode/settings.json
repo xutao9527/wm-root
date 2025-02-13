@@ -97,6 +97,7 @@
         "numeric": "cpp",
         "ranges": "cpp",
         "typeindex": "cpp",
-        "deque": "cpp"
+        "deque": "cpp",
+        "random": "cpp"
     }
 }

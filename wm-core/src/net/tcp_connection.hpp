@@ -1,3 +1,5 @@
+#pragma once
+
 #include <boost/asio.hpp>
 
 class tcp_connection : public std::enable_shared_from_this<tcp_connection>
@@ -14,8 +16,8 @@ public:
 
 	~tcp_connection()
 	{
-		socket_.close();
 		spdlog::debug("~tcp_connection destructor...");
+		socket_.close();
 	}
 
 	void start()
