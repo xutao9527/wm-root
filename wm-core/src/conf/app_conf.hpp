@@ -10,8 +10,8 @@ public:
 
 public:
     std::string listen_address;
+    int socket_port;
     int http_port;
     bool enable_websocket;
-    int socket_port;
     int worker_threads;
 };
