@@ -2,15 +2,17 @@
 
 #include <boost/asio.hpp>
 #include <boost/beast.hpp>
+#include "websocket_connection.hpp"
 
 class http_connection : public std::enable_shared_from_this<http_connection>
 {
 private:
-    boost::beast::tcp_stream stream_;
     boost::beast::flat_buffer buffer_;
+    boost::beast::tcp_stream stream_;
+    
 
 public:
-    http_connection(boost::asio::ip::tcp::socket &&socket)
+    http_connection(boost::asio::ip::tcp::socket socket)
         : stream_(std::move(socket))
     {
         spdlog::debug("http_connection constructor...");
@@ -31,9 +33,18 @@ public:
     {
         while (true)
         {
-            stream_.expires_after(std::chrono::seconds(3));
+            stream_.expires_after(std::chrono::seconds(1));
             boost::beast::http::request<boost::beast::http::string_body> req;
             co_await boost::beast::http::async_read(stream_, buffer_, req, boost::asio::use_awaitable);
+
+            if(boost::beast::websocket::is_upgrade(req)){
+                spdlog::debug("upgrade request to websocket");
+                std::shared_ptr<websocket_connection> connection = std::make_shared<websocket_connection>(std::move(stream_.release_socket()));
+				connection->start(std::move(req));
+                co_return;
+            }
+
+            spdlog::debug("http request");
             boost::beast::http::message_generator msg = handle_request(req);
             bool keep_alive = msg.keep_alive();
             co_await boost::beast::async_write(stream_, std::move(msg));
@@ -42,7 +53,7 @@ public:
                 break;
             }
         }
-        stream_.socket().shutdown(boost::asio::ip::tcp::socket::shutdown_send);
+        //stream_.socket().shutdown(boost::asio::ip::tcp::socket::shutdown_send);
     }
 
     boost::beast::http::message_generator handle_request(boost::beast::http::request<boost::beast::http::string_body> req)
