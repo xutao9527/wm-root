@@ -73,15 +73,15 @@ public:
 
         auto const ok =
             [&req](boost::beast::string_view target)
-            {
-                boost::beast::http::response<boost::beast::http::string_body> res{ boost::beast::http::status::ok, req.version() };
-                res.set(boost::beast::http::field::server, BOOST_BEAST_VERSION_STRING);
-                res.set(boost::beast::http::field::content_type, "text/html");
-                res.keep_alive(req.keep_alive());
-                res.body() = "The resource '" + std::string(target) + "' was ok.";
-                res.prepare_payload();
-                return res;
-            };
+        {
+            boost::beast::http::response<boost::beast::http::string_body> res{boost::beast::http::status::ok, req.version()};
+            res.set(boost::beast::http::field::server, BOOST_BEAST_VERSION_STRING);
+            res.set(boost::beast::http::field::content_type, "text/html");
+            res.keep_alive(req.keep_alive());
+            res.body() = "The resource '" + std::string(target) + "' was ok.";
+            res.prepare_payload();
+            return res;
+        };
         return ok(req.target());
     }
 };
