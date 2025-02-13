@@ -14,7 +14,7 @@ app_conf::app_conf()
         ws_port = pt.get<int>("ServerSettings.ws_port", 8080);
         socket_port = pt.get<int>("ServerSettings.socket_port", 5678);
         worker_threads = pt.get<int>("ServerSettings.worker_threads", 4);
-        spdlog::debug("read config file success: listen_address: {}, http_port: {}, ws_port: {}, socket_port: {}, worker_threads: {}", listen_address, http_port, ws_port, socket_port, worker_threads);
+        // spdlog::debug("read config file success: listen_address: {}, http_port: {}, ws_port: {}, socket_port: {}, worker_threads: {}", listen_address, http_port, ws_port, socket_port, worker_threads);
     }
     catch (const std::exception &e)
     {

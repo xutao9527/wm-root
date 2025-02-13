@@ -7,16 +7,24 @@
 
 class listener : public std::enable_shared_from_this<listener>
 {
+private:
+	boost::asio::io_context &io_context_;
+	app_conf &app_conf_;
+	std::unique_ptr<boost::asio::ip::tcp::acceptor> socket_acceptor_;
+	std::unique_ptr<boost::asio::ip::tcp::acceptor> http_acceptor_;
+	boost::asio::ip::tcp::endpoint socket_endpoint_;
+	boost::asio::ip::tcp::endpoint http_endpoint_;
+
 public:
-	listener(boost::asio::io_context &io_context, app_conf &app_conf) : io_context_(io_context), app_conf_(app_conf)
+	listener(boost::asio::io_context &io_context, app_conf &app_conf)
+		: io_context_(io_context),
+		  app_conf_(app_conf)
 	{
 		spdlog::debug("listener constructor...");
 		socket_endpoint_ = boost::asio::ip::tcp::endpoint(boost::asio::ip::make_address(app_conf_.listen_address), app_conf_.socket_port);
 		socket_acceptor_ = std::make_unique<boost::asio::ip::tcp::acceptor>(io_context_, socket_endpoint_);
-		spdlog::debug("socket acceptor: {} port: {}", socket_acceptor_->local_endpoint().address().to_string(), socket_acceptor_->local_endpoint().port());
-		http_endpoint_ = boost::asio::ip::tcp::endpoint(boost::asio::ip::make_address(app_conf_.listen_address), app_conf_.http_port);
-		http_acceptor_ = std::make_unique<boost::asio::ip::tcp::acceptor>(io_context_, http_endpoint_);
-		spdlog::debug("http acceptor: {} port: {}", http_acceptor_->local_endpoint().address().to_string(), http_acceptor_->local_endpoint().port());
+		http_endpoint_ = boost::asio::ip::tcp::endpoint(boost::asio::ip::make_address(app_conf.listen_address), app_conf.http_port);
+		http_acceptor_ = std::make_unique<boost::asio::ip::tcp::acceptor>(io_context, http_endpoint_);
 	}
 
 	~listener()
@@ -28,8 +36,8 @@ public:
 	{
 		co_spawn(io_context_, [self = shared_from_this()]
 				 { return self->accept_socket_connections(); }, boost::asio::detached);
-		// co_spawn(io_context_, [self = shared_from_this()]
-		// 		 { return self->accept_http_connections(); }, boost::asio::detached);
+		co_spawn(io_context_, [self = shared_from_this()]
+				 { return self->accept_http_connections(); }, boost::asio::detached);
 	}
 
 private:
@@ -72,12 +80,4 @@ private:
 			}
 		}
 	}
-
-private:
-	boost::asio::io_context &io_context_;
-	app_conf &app_conf_;
-	std::unique_ptr<boost::asio::ip::tcp::acceptor> socket_acceptor_;
-	std::unique_ptr<boost::asio::ip::tcp::acceptor> http_acceptor_;
-	boost::asio::ip::tcp::endpoint socket_endpoint_;
-	boost::asio::ip::tcp::endpoint http_endpoint_;
 };
