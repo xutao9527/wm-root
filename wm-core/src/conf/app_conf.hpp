@@ -11,7 +11,7 @@ public:
 public:
     std::string listen_address;
     int http_port;
-    int ws_port;
+    bool enable_websocket;
     int socket_port;
     int worker_threads;
 };

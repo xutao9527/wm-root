@@ -30,7 +30,7 @@ public:
 		{
 			worker_threads_.emplace_back([this]() {io_context_->run(); });
 		}
-        //co_spawn(*io_context_, [this]{ return this->getInputUntilExit(); }, boost::asio::detached);
+        co_spawn(*io_context_, [this]{ return this->getInputUntilExit(); }, boost::asio::detached);
 		io_context_->run();
 	}
 

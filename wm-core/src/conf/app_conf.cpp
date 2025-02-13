@@ -11,7 +11,7 @@ app_conf::app_conf()
         boost::property_tree::ini_parser::read_ini("resources/config.ini", pt);
         listen_address = pt.get<std::string>("ServerSettings.listen_address", "127.0.0.1");
         http_port = pt.get<int>("ServerSettings.http_port", 8080);
-        ws_port = pt.get<int>("ServerSettings.ws_port", 8080);
+        enable_websocket = pt.get<bool>("ServerSettings.enable_websocket", true);
         socket_port = pt.get<int>("ServerSettings.socket_port", 5678);
         worker_threads = pt.get<int>("ServerSettings.worker_threads", 4);
         // spdlog::debug("read config file success: listen_address: {}, http_port: {}, ws_port: {}, socket_port: {}, worker_threads: {}", listen_address, http_port, ws_port, socket_port, worker_threads);
