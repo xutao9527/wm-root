@@ -50,7 +50,7 @@ private:
 				boost::asio::ip::tcp::socket socket = co_await socket_acceptor_->async_accept();
 				std::stringstream thread_id_converter;
 				thread_id_converter << std::this_thread::get_id();
-				spdlog::info("new socket connection from: {} at thread id: {}", socket.remote_endpoint().address().to_string(), thread_id_converter.str());
+				//spdlog::info("new socket connection from: {} at thread id: {}", socket.remote_endpoint().address().to_string(), thread_id_converter.str());
 				std::shared_ptr<tcp_connection> connection = std::make_shared<tcp_connection>(std::move(socket));
 				connection->start();
 			}
@@ -70,7 +70,7 @@ private:
 				boost::asio::ip::tcp::socket socket = co_await http_acceptor_->async_accept();
 				std::stringstream thread_id_converter;
 				thread_id_converter << std::this_thread::get_id();
-				spdlog::info("new http connection from: {} at thread id: {}", socket.remote_endpoint().address().to_string(), thread_id_converter.str());
+				spdlog::debug("new http connection from: {} at thread id: {}", socket.remote_endpoint().address().to_string(), thread_id_converter.str());
 				std::shared_ptr<http_connection> connection = std::make_shared<http_connection>(std::move(socket));
 				connection->start();
 			}
