@@ -33,17 +33,15 @@ public:
     {
         while (true)
         {
-            stream_.expires_after(std::chrono::seconds(1));
+            stream_.expires_after(std::chrono::seconds(5));
             boost::beast::http::request<boost::beast::http::string_body> req;
             co_await boost::beast::http::async_read(stream_, buffer_, req, boost::asio::use_awaitable);
-
             if(boost::beast::websocket::is_upgrade(req)){
                 spdlog::debug("upgrade request to websocket");
                 std::shared_ptr<websocket_connection> connection = std::make_shared<websocket_connection>(std::move(stream_.release_socket()));
 				connection->start(std::move(req));
                 co_return;
             }
-
             spdlog::debug("http request");
             boost::beast::http::message_generator msg = handle_request(req);
             bool keep_alive = msg.keep_alive();
@@ -53,7 +51,7 @@ public:
                 break;
             }
         }
-        //stream_.socket().shutdown(boost::asio::ip::tcp::socket::shutdown_send);
+        stream_.socket().shutdown(boost::asio::ip::tcp::socket::shutdown_send);
     }
 
     boost::beast::http::message_generator handle_request(boost::beast::http::request<boost::beast::http::string_body> req)

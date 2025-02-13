@@ -55,7 +55,7 @@ public:
 					if (ex.code() == boost::asio::error::operation_aborted ||
 						ex.code() == boost::asio::error::eof)
 					{
-						spdlog::debug("Client disconnected: {}", socket_.remote_endpoint().address().to_string());
+						spdlog::debug("tcp_connection closed at address: {}", socket_.remote_endpoint().address().to_string());
 					}
 					else
 					{
@@ -74,7 +74,8 @@ public:
 			if (ex.code() == boost::asio::error::operation_aborted ||
 				ex.code() == boost::asio::error::eof)
 			{
-				spdlog::debug("Client disconnected: {}", socket_.remote_endpoint().address().to_string());
+			
+				spdlog::debug("tcp_connection closed at address: {}", socket_.remote_endpoint().address().to_string());
 			}
 			else
 			{
