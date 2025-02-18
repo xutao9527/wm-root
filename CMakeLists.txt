@@ -1,8 +1,12 @@
 cmake_minimum_required(VERSION 3.25)
 
-#
+# 设置vcpkg工具链
 set(CMAKE_TOOLCHAIN_FILE "C:/vcpkg/scripts/buildsystems/vcpkg.cmake" CACHE STRING "vcpkg toolchain file")
-add_definitions(-D_WIN32_WINNT=0x0A00)
+
+# 判断设置Windows版本
+if(WIN32)
+    add_definitions(-D_WIN32_WINNT=0x0A00)
+endif()
 
 # 设置wm版本
 set(WM_VERSION "1.0.0" CACHE STRING "wm version")
