@@ -1,10 +1,9 @@
 cmake_minimum_required(VERSION 3.25)
 project(wm-core VERSION ${WM_VERSION})
 
-cmake_policy(SET CMP0144 NEW) # 允许使用 BOOST_ROOT
-cmake_policy(SET CMP0167 OLD) # 继续使用 FindBoost.cmake
 
-find_package(Boost REQUIRED COMPONENTS system)
+find_package(spdlog CONFIG REQUIRED)
+find_package(Boost CONFIG REQUIRED COMPONENTS system)
 
 message(STATUS "Boost_INCLUDE_DIRS: ${Boost_INCLUDE_DIRS}")
 message(STATUS "Boost_LIBRARY_DIRS: ${Boost_LIBRARY_DIRS}")

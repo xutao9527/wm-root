@@ -1,8 +1,8 @@
 cmake_minimum_required(VERSION 3.25)
 
-# 设置Boost相关环境变量
-set(BOOST_ROOT "C:/Boost" CACHE PATH "Boost root directory")
-set(BOOST_LIBDIARY "C:/Boost/lib" CACHE PATH "Boost library directory")
+#
+set(CMAKE_TOOLCHAIN_FILE "C:/vcpkg/scripts/buildsystems/vcpkg.cmake" CACHE STRING "vcpkg toolchain file")
+add_definitions(-D_WIN32_WINNT=0x0A00)
 
 # 设置wm版本
 set(WM_VERSION "1.0.0" CACHE STRING "wm version")
@@ -22,10 +22,6 @@ if(MSVC)
 else()
     add_compile_options(-finput-charset=utf-8)
 endif()
-
-
-# 添加第三方库
-add_subdirectory(3rdparty)
 
 # 添加wm-net模块
 # add_subdirectory(wm-net)
