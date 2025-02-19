@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.25)
-project(wm-core VERSION ${WM_VERSION})
 
+project(wm-core VERSION ${WM_VERSION})
 
 find_package(spdlog CONFIG REQUIRED)
 find_package(Boost CONFIG REQUIRED COMPONENTS system)

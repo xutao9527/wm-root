@@ -1,7 +1,8 @@
 cmake_minimum_required(VERSION 3.25)
 
 # 设置vcpkg工具链
-set(CMAKE_TOOLCHAIN_FILE "C:/vcpkg/scripts/buildsystems/vcpkg.cmake" CACHE STRING "vcpkg toolchain file")
+set(CMAKE_TOOLCHAIN_FILE "/opt/vcpkg/scripts/buildsystems/vcpkg.cmake" CACHE STRING "vcpkg toolchain file")
+add_definitions(-DBOOST_ASIO_HAS_STD_COROUTINE)
 
 # 设置项目名称
 set(WM_VERSION "1.0.0" CACHE STRING "wm version")
@@ -12,6 +13,7 @@ if(MSVC)
     add_compile_options(/bigobj)
     add_compile_options(/utf-8)
 else()
+#    add_compile_options(-std=gnu++20 -fext-numeric-literals)
     add_compile_options(-finput-charset=utf-8)
 endif()
 
